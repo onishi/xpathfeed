@@ -157,7 +157,7 @@ __DATA__
       <div class="container">
         <div class="row">
           <div class="span12" style="text-align:center">
-          <p class="mtl mbl">&copy; <a href="http://www.hatena.ne.jp/">id:onishi</a></p>
+          <p class="mtl mbl"><a href="https://github.com/onishi/xpathfeed">View on GitHub</a> &copy; <a href="http://www.hatena.ne.jp/">id:onishi</a></p>
           </div>
         </div>
       </div>
