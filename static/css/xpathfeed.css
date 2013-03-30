@@ -2,6 +2,10 @@
   word-break: break-all;
 }
 
+.palette {
+  text-transform: none;
+}
+
 .headline {
   padding: 40px 0 40px;
   text-align: center;
