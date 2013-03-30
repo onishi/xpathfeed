@@ -89,7 +89,7 @@ __DATA__
           <input type="text" name="url" value="[% xpf.url %]" placeholder="URL">
           [% IF xpf.url %]
 
-            <h2>Preview of <a href="[% xpf.url %]">[% xpf.title %]</a></h2>
+            <h2>Preview <a href="[% xpf.url %]">[% xpf.title %]</a></h2>
             <iframe id="iframe" frameborder="0"></iframe>
             <script>
               setTimeout( function(){
@@ -105,12 +105,20 @@ __DATA__
 
               <h2>List <span style="font-size:80%">([% xpf.list_size %] items)</span></h2>
 
+              <div class="row mbl">
+                <input type="submit" value="Customize" class="btn">
+              </div>
+
               [% FOREACH item IN xpf.list %]
                 [% LAST IF loop.count > 5 %]
                 <div class="row mbl">
                   <div class="span4 palette palette-silver">
+                    [% IF item.image %]
+                      <img src="[% item.image %]" alt="" style="max-width:80px;max-height:80px;float:right">
+                    [% END # IF item.image %]
                     <p>[% item.title %]</p>
                     <p>[% item.link %]</p>
+                    <span style="clear:both"></span>
                   </div>
                   <div class="span8 palette palette-clouds"><pre class="source">[% item.html %]</pre></div>
                 </div>[% # div.row %]
