@@ -75,6 +75,11 @@ __DATA__
     <!--[if lt IE 9]>
       <script src="js/html5shiv.js"></script>
     <![endif]-->
+
+    [% IF xpf.feed_url %]
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="[% xpf.feed_url %]">
+    [% END # IF xpf.feed_url %]
+
   </head>
   <body>
     <div class="container">
@@ -106,7 +111,11 @@ __DATA__
               <h2>List <span style="font-size:80%">([% xpf.list_size %] items)</span></h2>
 
               <div class="row mbl">
-                <input type="submit" value="Customize" class="btn">
+                <div class="span3"><dl><dt>title</dt><dd><input type="text" name="xpath_item_title" value="[% xpf.xpath_item_title%]" placeholder="//a"></dd></div>
+                <div class="span3"><dl><dt>link</dt><dd><input type="text" name="xpath_item_link" value="[% xpf.xpath_item_link%]" placeholder="//a/@href"></dd></div>
+                <div class="span3"><dl><dt>image</dt><dd><input type="text" name="xpath_item_image" value="[% xpf.xpath_item_image%]" placeholder="//img/@src"></dd></div>
+                <div class="span3"><dl><dt>description</dt><dd><input type="text" name="xpath_item_description" value="[% xpf.xpath_item_description%]" placeholder="//*"></dd></div>
+                <div class="span12"><input type="submit" value="Customize" class="btn"></div>
               </div>
 
               [% FOREACH item IN xpf.list %]
@@ -118,6 +127,7 @@ __DATA__
                     [% END # IF item.image %]
                     <p>[% item.title %]</p>
                     <p>[% item.link %]</p>
+                    <p class="palette palette-clouds">[% item.description %]</p>
                     <span style="clear:both"></span>
                   </div>
                   <div class="span8 palette palette-clouds"><pre class="source">[% item.html %]</pre></div>
