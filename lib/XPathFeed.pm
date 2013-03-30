@@ -241,7 +241,7 @@ sub feed {
         for my $item (@$list) {
             $rss->add_item(
                 title     => $item->{title},
-                permaLink => $item->{link},
+                link      => $item->{link},
                 enclosure => $item->{image} ? {
                     url  => $item->{image},
                     type => "image"
