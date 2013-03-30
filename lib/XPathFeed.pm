@@ -237,8 +237,9 @@ sub feed {
     $self->{feed} ||= do {
         my $rss = XML::RSS->new (version => '2.0');
         $rss->channel(
-            title => $self->title,
-            link  => $self->url,
+            title       => $self->title,
+            link        => $self->page_uri,
+            description => $self->url,
         );
         for my $item (@$list) {
             $rss->add_item(
@@ -255,7 +256,7 @@ sub feed {
     };
 }
 
-sub self_uri { shift->add_query_params(URI->new('/')) }
+sub page_uri { shift->add_query_params(URI->new('/')) }
 sub feed_uri { shift->add_query_params(URI->new('/feed')) }
 
 sub add_query_params {
