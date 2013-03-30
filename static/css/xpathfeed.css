@@ -1,3 +1,7 @@
+* {
+  word-break: break-all;
+}
+
 .headline {
   padding: 40px 0 40px;
   text-align: center;
