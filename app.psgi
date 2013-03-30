@@ -125,7 +125,7 @@ __DATA__
                     [% IF item.image %]
                       <img src="[% item.image %]" alt="" style="max-width:80px;max-height:80px;float:right">
                     [% END # IF item.image %]
-                    <p>[% item.title %]</p>
+                    <h4>[% item.title %]</h4>
                     <p>[% item.link %]</p>
                     <p class="palette palette-clouds">[% item.description %]</p>
                     <span style="clear:both"></span>
