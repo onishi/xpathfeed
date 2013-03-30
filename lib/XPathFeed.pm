@@ -255,14 +255,20 @@ sub feed {
     };
 }
 
-sub feed_url {
+sub self_uri { shift->add_query_params(URI->new('/')) }
+sub feed_uri { shift->add_query_params(URI->new('/feed')) }
+
+sub add_query_params {
     my $self = shift;
-    my $feed_url = '/feed?url=' . uri_escape($self->uri);
-    for my $key (qw/ xpath_list xpath_item_title xpath_item_link xpath_item_image xpath_item_description/) {
+    my $uri = shift or return;
+    for my $key (qw/url xpath_list xpath_item_title xpath_item_link xpath_item_image xpath_item_description/) {
         $self->$key() or next;
-        $feed_url .= sprintf '&%s=%s', $key, uri_escape($self->$key());
+        $uri->query_form(
+            $uri->query_form,
+            $key => $self->$key(),
+        );
     }
-    return $feed_url;
+    return $uri;
 }
 
 sub clean {

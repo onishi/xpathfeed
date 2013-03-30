@@ -76,9 +76,9 @@ __DATA__
       <script src="js/html5shiv.js"></script>
     <![endif]-->
 
-    [% IF xpf.feed_url %]
-    <link rel="alternate" type="application/rss+xml" title="RSS" href="[% xpf.feed_url %]">
-    [% END # IF xpf.feed_url %]
+    [% IF xpf.feed_uri %]
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="[% xpf.feed_uri %]">
+    [% END # IF xpf.feed_uri %]
 
   </head>
   <body>
@@ -135,7 +135,7 @@ __DATA__
               [% END # FOREACH item IN xpf.list %]
 
               <div class="row">
-                <a href="[% xpf.feed_url %]" class="btn btn-large btn-block palette palette-bright-dark">RSS Feed Here!!</a>
+                <a href="[% xpf.feed_uri %]" class="btn btn-large btn-block palette palette-bright-dark">RSS Feed Here!!</a>
               </div>
 
             [% ELSE # IF xpf.list_size %]
