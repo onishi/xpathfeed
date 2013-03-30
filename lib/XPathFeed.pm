@@ -14,6 +14,7 @@ use HTML::TreeBuilder::XPath;
 use HTTP::Request;
 use Scalar::Util qw(blessed);
 use URI;
+use URI::Escape qw(uri_escape);
 use XML::RSS;
 
 our ($UserAgent, $Cache);
@@ -134,6 +135,19 @@ sub _res2result {
     };
 }
 
+sub _add_inspector {
+    my $content = shift;
+    $content =~ s{<base [^>]+>}{}ig;
+    my $script = '<script type="text/javascript" charset="utf-8" src="/js/inspector.js">';
+    $content =~ s{(</body>)}{$script$1} or $content .= $script;
+    $content;
+}
+
+sub frame_content {
+    my $self = shift;
+    $self->{frame_content} ||= _add_inspector($self->resolved_content);
+}
+
 BEGIN {
     no strict 'refs';
     for my $method (qw/content resolved_content decoded_content/) {
@@ -175,12 +189,18 @@ sub list {
                 local $SIG{__WARN__} = sub { };
                 my @nodes = $tree->findnodes(xpath($xpath));
                 extract($nodes[0], $key, $self->uri);
-            }
+            };
+            $item->{html} = $node->as_XML;
         }
         push @{$self->{list}}, $item;
         $tree->delete;
     }
     $self->{list};
+}
+
+sub list_size {
+    my $self = shift;
+    return scalar @{$self->list || []};
 }
 
 sub title {
@@ -230,6 +250,16 @@ sub feed {
         }
         $rss->as_string;
     };
+}
+
+sub feed_url {
+    my $self = shift;
+    my $feed_url = '/feed?url=' . uri_escape($self->uri);
+    for my $key (qw/ xpath_list xpath_item_title xpath_item_link xpath_item_image /) {
+        $self->$key() or next;
+        $feed_url .= sprintf '&%s=%s', $key, uri_escape($self->$key());
+    }
+    return $feed_url;
 }
 
 sub clean {
