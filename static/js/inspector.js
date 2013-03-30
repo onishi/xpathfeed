@@ -1,55 +1,46 @@
-alert(1);
-(function(scripts, callback, errorback) {
-    if (typeof errorback != 'function')
-        errorback = function(url) { alert('jsloader load error: ' + url) };
+// extend version of $X
+// $X(exp);
+// $X(exp, context);
+// $X(exp, type);
+// $X(exp, context, type);
+function $X (exp, context, type /* want type */) {
+	if (typeof context == "function") {
+		type    = context;
+		context = null;
+	}
+	if (!context) context = document;
+	exp = (context.ownerDocument || context).createExpression(exp, function (prefix) {
+		var o = document.createNSResolver(context)(prefix);
+		if (o) return o;
+		return (document.contentType == "application/xhtml+xml") ? "http://www.w3.org/1999/xhtml" : "";
+	});
 
-    var cssRegexp = /.css$/;
-    var load = function(url) {
-        if (cssRegexp.test(url)) {
-            var link = document.createElement('link');
-            link.href = url;
-            link.type = 'text/css';
-            link.rel = 'stylesheet';
-            (document.getElementsByTagName('head')[0] || document.body).appendChild(link);
-            if (scripts.length) {
-                load(scripts.shift());
-            } else {
-                callback();
-            }
-        } else {
-            var script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.charset = 'utf-8';
-            var current_callback;
-            if (scripts.length) {
-                var u = scripts.shift();
-                current_callback = function() { load(u) }
-            } else {
-                current_callback = callback;
-            }
-            if (window.ActiveXObject) { // IE
-                script.onreadystatechange = function() {
-                    if (script.readyState == 'complete' || script.readyState == 'loaded') {
-                        current_callback();
-                    }
-                }
-            } else {
-                script.onload = current_callback;
-                script.onerror = function() { errorback(url) };
-            }
-            script.src = url;
-            document.body.appendChild(script);
-        }
-    }
-
-    load(scripts.shift());
-})(["http://gist.github.com/raw/3238/dollarX.js"], function() {
-/*
- * cho45のjAutoPagerizeに付属しているXPathジェネレータをコピペ改変
- * @license CCPL ( http://creativecommons.org/licenses/by/3.0/ )
- * @require http://gist.github.com/raw/3238/dollarX.js
- *
- */
+	switch (type) {
+		case String:  return exp.evaluate(context, XPathResult.STRING_TYPE, null).stringValue;
+		case Number:  return exp.evaluate(context, XPathResult.NUMBER_TYPE, null).numberValue;
+		case Boolean: return exp.evaluate(context, XPathResult.BOOLEAN_TYPE, null).booleanValue;
+		case Array:
+			var result = exp.evaluate(context, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+			for (var ret = [], i = 0, len = result.snapshotLength; i < len; i++) {
+				ret.push(result.snapshotItem(i));
+			}
+			return ret;
+		case undefined:
+			var result = exp.evaluate(context, XPathResult.ANY_TYPE, null);
+			switch (result.resultType) {
+				case XPathResult.STRING_TYPE : return result.stringValue;
+				case XPathResult.NUMBER_TYPE : return result.numberValue;
+				case XPathResult.BOOLEAN_TYPE: return result.booleanValue;
+				case XPathResult.UNORDERED_NODE_ITERATOR_TYPE:
+					// not ensure the order.
+					var ret = [], i = null;
+					while ((i = result.iterateNext())) ret.push(i);
+					return ret;
+			}
+			return null;
+		default: throw(TypeError("$X: specified type is not valid type."));
+	}
+}
 (function() {
 	var h = function(s) {
 		var d = document.createElement("div");
@@ -164,5 +155,4 @@ alert(1);
 		}
 	};
 	XPathGenerator.toggle();
-})()
-});
+})();

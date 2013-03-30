@@ -138,7 +138,7 @@ sub _res2result {
 sub _add_inspector {
     my $content = shift;
     $content =~ s{<base [^>]+>}{}ig;
-    my $script = '<script type="text/javascript" charset="utf-8" src="/js/inspector.js">';
+    my $script = '<script type="text/javascript" charset="utf-8" src="/js/inspector.js"></script>';
     $content =~ s{(</body>)}{$script$1} or $content .= $script;
     $content;
 }
