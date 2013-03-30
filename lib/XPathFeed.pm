@@ -22,9 +22,10 @@ our ($UserAgent, $Cache);
 our $EXPIRE = 10 * 60; # 10分
 
 our $DEFAULT_XPATH_ITEM = {
-    title => '//a',
-    link  => '//a/@href',
-    image => '//img/@src',
+    title       => '//a',
+    link        => '//a/@href',
+    image       => '//img/@src',
+    description => '//*',
 };
 
 __PACKAGE__->mk_classdata(
@@ -36,6 +37,7 @@ __PACKAGE__->mk_classdata(
             xpath_item_title
             xpath_item_link
             xpath_item_image
+            xpath_item_description
         },
     ],
 );
@@ -240,9 +242,10 @@ sub feed {
         );
         for my $item (@$list) {
             $rss->add_item(
-                title     => $item->{title},
-                link      => $item->{link},
-                enclosure => $item->{image} ? {
+                title       => $item->{title},
+                link        => $item->{link},
+                description => $item->{description},
+                enclosure   => $item->{image} ? {
                     url  => $item->{image},
                     type => "image"
                 } : undef,
@@ -255,7 +258,7 @@ sub feed {
 sub feed_url {
     my $self = shift;
     my $feed_url = '/feed?url=' . uri_escape($self->uri);
-    for my $key (qw/ xpath_list xpath_item_title xpath_item_link xpath_item_image /) {
+    for my $key (qw/ xpath_list xpath_item_title xpath_item_link xpath_item_image xpath_item_description/) {
         $self->$key() or next;
         $feed_url .= sprintf '&%s=%s', $key, uri_escape($self->$key());
     }
