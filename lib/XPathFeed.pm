@@ -130,11 +130,19 @@ sub _get {
 sub _res2result {
     my ($self, $res) = @_;
     return {
-        content         => $res->content,
-        resolved_content     => $self->resolver->resolve($res->content),
-        decoded_content => $res->decoded_content,
-        cached          => time(),
+        content          => $res->content,
+        resolved_content => $self->_resolve($res->decoded_content),
+        decoded_content  => $res->decoded_content,
+        cached           => time(),
     };
+}
+
+sub _resolve {
+    my $self = shift;
+    my $content = shift or return;
+    $content = Encode::encode('utf-8', $content) if Encode::is_utf8($content);
+    $content = $self->resolver->resolve($content);
+    $content;
 }
 
 sub _add_inspector {
