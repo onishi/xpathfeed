@@ -69,11 +69,14 @@ function $X (exp, context, type /* want type */) {
 				elements[i].addEventListener("click", function(e){ e.preventDefault() }, true);
 			}
 
-			//XPathGenerator._inspect.addEventListener("click", function () {
+			XPathGenerator._inspect.addEventListener("click", function () {
 				document.body.addEventListener("mouseover", XPathGenerator.mouseover, true);
 				document.body.addEventListener("mousedown", XPathGenerator.mousedown, true);
 				document.body.addEventListener("mouseout",  XPathGenerator.mouseout,  true);
-			//}, false);
+			}, false);
+			document.body.addEventListener("mouseover", XPathGenerator.mouseover, true);
+			document.body.addEventListener("mousedown", XPathGenerator.mousedown, true);
+			document.body.addEventListener("mouseout",  XPathGenerator.mouseout,  true);
 		},
 
 		close : function () {
