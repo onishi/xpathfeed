@@ -353,6 +353,29 @@ XPathFeed is a feed generater from xpath.
 
   plackup app.psgi
 
+=over
+
+=item new
+
+=item new_from_query
+
+=item url
+
+=item xpath_list
+
+=item xpath_item_title
+
+=item xpath_item_link
+
+=item xpath_item_image
+
+=item xpath_item_description
+
+=item list
+
+=item feed
+
+=back
 
 =head1 AUTHOR
 
