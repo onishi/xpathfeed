@@ -326,3 +326,49 @@ sub is_link_element {
 1;
 
 __END__
+
+=head1 NAME
+
+XPathFeed - Generate RSS Feed from XPath
+
+=head1 SYNOPSIS
+
+  use XPathFeed;
+  my $x = XPathFeed->new;
+  $x->url($url);
+  $x->xpath_list($xpath);
+  print $x->feed;
+
+=head1 DESCRIPTION
+
+XPathFeed is a feed generater from xpath.
+
+  use XPathFeed;
+  my $x = XPathFeed->new;
+  $x->url($url);
+  $x->xpath_list($xpath);
+  print $x->feed;
+
+  or
+
+  plackup app.psgi
+
+
+=head1 AUTHOR
+
+Yasuhiro Onishi E<lt>yasuhiro.onishi@gmail.comE<gt>
+
+=head1 SEE ALSO
+
+=over
+
+=item L<Web::Scraper>
+
+=back
+
+=head1 LICENSE
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=cut
