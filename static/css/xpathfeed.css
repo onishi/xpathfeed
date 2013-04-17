@@ -29,6 +29,7 @@ iframe {
 
 h1.title-logo a {
   color: #005580;
+  text-decoration: none;
 }
 
 h1.title-logo a:hover {
