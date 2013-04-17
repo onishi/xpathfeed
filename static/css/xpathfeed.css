@@ -26,3 +26,7 @@ iframe {
   -moz-border-radius: 6px;
   border: 4px solid #dce4ec;
 }
+
+h1.title-logo a {
+  color: #005580;
+}
