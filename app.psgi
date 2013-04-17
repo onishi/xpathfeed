@@ -84,7 +84,7 @@ __DATA__
   <body>
     <div class="container">
       <div class="headline">
-        <h1 class="title-logo">XPathFeed</h1>
+        <h1 class="title-logo"><a href="/">XPathFeed</a></h1>
         <p>Generate RSS Feed from XPath</p>
       </div>
       <div class="row">

@@ -341,7 +341,7 @@ XPathFeed - Generate RSS Feed from XPath
 
 =head1 DESCRIPTION
 
-XPathFeed is a feed generater from xpath.
+XPathFeed is a feed generator from xpath.
 
   use XPathFeed;
   my $x = XPathFeed->new;
