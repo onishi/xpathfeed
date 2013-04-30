@@ -5,6 +5,7 @@ use Path::Class;
 my $root = dir(__FILE__)->parent;
 
 use Plack::Builder;
+use Path::Class;
 
 use lib 'lib';
 use XPathFeed;
@@ -54,6 +55,27 @@ builder {
         root => $root->subdir('static');
 
     enable 'Plack::Middleware::ReverseProxy';
+
+    my $access_log = Path::Class::file($ENV{XPF_ACCESS_LOG} || '/var/log/app/access_log');
+    my $fh_access = $access_log->open('>>')
+        or die "Cannot open >> $access_log: $!";
+    $fh_access->autoflush(1);
+
+    enable 'Plack::Middleware::AccessLog::Timed',
+        logger => sub {
+            print $fh_access @_;
+        },
+        format => join("\t",
+            "time:%t",
+            "host:%h",
+            "domain:%V",
+            "req:%r",
+            "status:%>s",
+            "size:%b",
+            "referer:%{Referer}i",
+            "ua:%{User-Agent}i",
+            "taken:%D",
+        );
 
     __PACKAGE__->to_app(
         no_x_frame_options => 1,
