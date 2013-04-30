@@ -135,7 +135,36 @@ sub _search : Test(3) {
     ok $result;
     is ref $result, 'ARRAY';
     is scalar @$result, 1;
+}
 
+sub _scheme : Test(5) {
+    my $self = shift;
+
+    no warnings 'redefine';
+    local *LWP::UserAgent::request = sub {
+        return HTTP::Response->new(
+            200,
+            'OK',
+            HTTP::Headers->new(Content_Type => 'text/html; charset=utf-8'),
+            '<html><head></head><body><ul><li><a href="./hoge">ほげ</a></li><li><a href="./fuga">ふが</a></li></ul></body></html>'
+        );
+    };
+
+    my $xpf = XPathFeed->new(
+        url        => 'hogehoge.com/_list',
+        xpath_list => 'ul li',
+    );
+    my $list = $xpf->list;
+    is $list->[0]->{node}->as_XML_compact,
+        decode_utf8('<li><a href="./hoge">ほげ</a></li>');
+    is $list->[0]->{title}, decode_utf8('ほげ');
+    is $list->[0]->{link}, decode_utf8('http://hogehoge.com/hoge');
+
+    is $list->[1]->{node}->as_XML_compact,
+        decode_utf8('<li><a href="./fuga">ふが</a></li>');
+    is $list->[1]->{link}, decode_utf8('http://hogehoge.com/fuga');
+
+    $xpf->clean;
 }
 
 __PACKAGE__->runtests;

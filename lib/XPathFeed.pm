@@ -87,7 +87,9 @@ sub resolver {
 
 sub uri {
     my $self = shift;
-    $self->{uri} ||= URI->new($self->url)->canonical;
+    my $url = $self->url;
+    $url =~ /http/ or $url = "http://$url";
+    $self->{uri} ||= URI->new($url)->canonical;
 }
 
 sub http_result {
