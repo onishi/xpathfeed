@@ -93,7 +93,7 @@ __DATA__
     <link href="/css/bootstrap.css" rel="stylesheet">
     <link href="/css/flat-ui.css" rel="stylesheet">
     <link href="/css/xpathfeed.css" rel="stylesheet">
-    <!-- link rel="shortcut icon" href="images/favicon.ico" -->
+    <link rel="shortcut icon" href="images/favicon.ico">
     <!--[if lt IE 9]>
       <script src="js/html5shiv.js"></script>
     <![endif]-->
@@ -104,6 +104,16 @@ __DATA__
 
   </head>
   <body>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50081271-1', 'xpathfeed.com');
+  ga('send', 'pageview');
+
+</script>
     <div class="container">
       <div class="headline">
         <h1 class="title-logo"><a href="/">XPathFeed</a></h1>
