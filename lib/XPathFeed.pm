@@ -255,7 +255,8 @@ sub feed {
             $rss->add_item(
                 title       => $item->{title},
                 link        => $item->{link},
-                description => $item->{description},
+                description => ( $item->{image} ? qq{<img src="$item->{image}"><br>} : '' )
+                    . $item->{description},
                 enclosure   => $item->{image} ? {
                     url  => $item->{image},
                     type => "image"
