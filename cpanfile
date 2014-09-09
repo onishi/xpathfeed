@@ -24,3 +24,10 @@ on configure => sub {
 on 'develop' => sub {
 };
 
+feature 'psgi', 'web app support' => sub {
+    requires 'Plack';
+    requires 'Path::Class';
+    requires 'Amon2::Lite';
+    requires 'Plack::Middleware::AccessLog::Timed';
+    requires 'Plack::Middleware::ReverseProxy';
+};
