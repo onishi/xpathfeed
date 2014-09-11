@@ -1,0 +1,28 @@
+{
+  "name": "XPathFeed",
+  "description": "Generate RSS Feed from XPath",
+  "addons": ["rediscloud:25"],
+  "success_url": "/",
+  "env": {
+    "BUILDPACK_URL": "https://github.com/pnu/heroku-buildpack-perl.git",
+    "XPF_CACHE": {
+      "description": "Cache class used by XPathFeed.pm",
+      "value": "Cache::Redis"
+    },
+    "GA_WEB_PROPERTY_ID": {
+      "description": "Google Analytics - web property ID (If empty, Google Analytics is disabled.)",
+      "value": "",
+      "required": false
+    },
+    "GA_CONFIG": {
+      "description": "Google Analytics - the last parameter for ga('create')",
+      "value": "",
+      "required": false
+    },
+    "XPF_ACCESS_LOG": {
+      "description": "Where to output access log",
+      "value": "STDERR",
+      "required": false
+    }
+  }
+}
