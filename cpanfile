@@ -1,4 +1,3 @@
-requires 'Cache::FileCache';
 requires 'Class::Accessor::Fast';
 requires 'Class::Data::Inheritable';
 requires 'Encode';
@@ -30,4 +29,12 @@ feature 'psgi', 'web app support' => sub {
     requires 'Amon2::Lite';
     requires 'Plack::Middleware::AccessLog::Timed';
     requires 'Plack::Middleware::ReverseProxy';
+};
+
+feature 'cache_file' => sub {
+    requires 'Cache::FileCache';
+};
+
+feature 'cache_redis' => sub {
+    requires 'Cache::Redis';
 };

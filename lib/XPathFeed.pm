@@ -5,7 +5,6 @@ use base qw/Class::Accessor::Fast Class::Data::Inheritable/;
 
 use XPathFeed::UserAgent;
 
-use Cache::FileCache;
 use Encode qw(decode_utf8);
 use HTML::ResolveLink;
 use HTML::Selector::XPath;
@@ -70,12 +69,33 @@ sub ua {
 }
 
 sub cache {
-    $Cache ||= Cache::FileCache->new(
-        {
-            namespace  => 'xpathfeed',
-            cache_root => '/tmp/filecache',
+    $Cache ||= do {
+        if (exists $ENV{XPF_CACHE} && $ENV{XPF_CACHE} eq 'Cache::Redis') {
+            require Cache::Redis;
+
+            my $args = {
+                namespace => 'xpathfeed',
+            };
+
+            my $redis_url = $ENV{REDISCLOUD_URL} || $ENV{REDISTOGO_URL};
+            if ($redis_url) {
+                my $uri = URI->new($redis_url);
+                $uri->scheme('ftp'); # host_port と password を呼べるようにする
+                $args->{server}   = $uri->host_port;
+                $args->{password} = $uri->password if $uri->password;
+            }
+
+            Cache::Redis->new($args);
+        } else {
+            require Cache::FileCache;
+            Cache::FileCache->new(
+                {
+                    namespace  => 'xpathfeed',
+                    cache_root => '/tmp/filecache',
+                }
+            );
         }
-    );
+    };
 }
 
 sub resolver {
