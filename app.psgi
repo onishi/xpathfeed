@@ -58,10 +58,15 @@ builder {
 
     enable 'Plack::Middleware::ReverseProxy';
 
-    my $access_log = Path::Class::file($ENV{XPF_ACCESS_LOG} || '/var/log/app/access_log');
-    my $fh_access = $access_log->open('>>')
-        or die "Cannot open >> $access_log: $!";
-    $fh_access->autoflush(1);
+    my $fh_access;
+    if (exists $ENV{XPF_ACCESS_LOG} && $ENV{XPF_ACCESS_LOG} eq 'STDERR') {
+        $fh_access = *STDERR;
+    } else {
+        my $access_log = Path::Class::file($ENV{XPF_ACCESS_LOG} || '/var/log/app/access_log');
+        $fh_access = $access_log->open('>>')
+            or die "Cannot open >> $access_log: $!";
+        $fh_access->autoflush(1);
+    }
 
     enable 'Plack::Middleware::AccessLog::Timed',
         logger => sub {
