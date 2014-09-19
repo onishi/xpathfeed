@@ -47,11 +47,21 @@ sub _ua : Test(1) {
     isa_ok($ua, "XPathFeed::UserAgent");
 }
 
-sub _cache : Test(1) {
+sub _cache : Test(2) {
     my $self = shift;
-    my $xpf = XPathFeed->new;
-    my $cache  = $xpf->cache;
-    isa_ok($cache, "Cache::FileCache");
+
+    subtest 'Cache::FileCache is used by default' => sub {
+        my $xpf = XPathFeed->new;
+        my $cache = $xpf->cache;
+        isa_ok($cache, "Cache::FileCache");
+    };
+
+    subtest 'Set cache externally' => sub {
+        my $xpf = XPathFeed->new;
+        my $new_cache = Cache::FileCache->new;
+        $xpf->cache($new_cache);
+        is($xpf->cache, $new_cache);
+    };
 }
 
 sub _http_result : Test(6) {

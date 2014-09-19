@@ -69,32 +69,16 @@ sub ua {
 }
 
 sub cache {
+    my ($self, $new_value) = @_;
+    return $Cache = $new_value if $new_value;
     $Cache ||= do {
-        if (exists $ENV{XPF_CACHE} && $ENV{XPF_CACHE} eq 'Cache::Redis') {
-            require Cache::Redis;
-
-            my $args = {
-                namespace => 'xpathfeed',
-            };
-
-            my $redis_url = $ENV{REDISCLOUD_URL} || $ENV{REDISTOGO_URL};
-            if ($redis_url) {
-                my $uri = URI->new($redis_url);
-                $uri->scheme('ftp'); # host_port と password を呼べるようにする
-                $args->{server}   = $uri->host_port;
-                $args->{password} = $uri->password if $uri->password;
+        require Cache::FileCache;
+        Cache::FileCache->new(
+            {
+                namespace  => 'xpathfeed',
+                cache_root => '/tmp/filecache',
             }
-
-            Cache::Redis->new($args);
-        } else {
-            require Cache::FileCache;
-            Cache::FileCache->new(
-                {
-                    namespace  => 'xpathfeed',
-                    cache_root => '/tmp/filecache',
-                }
-            );
-        }
+        );
     };
 }
 
