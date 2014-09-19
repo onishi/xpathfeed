@@ -12,9 +12,34 @@ use XPathFeed;
 
 use Amon2::Lite;
 
+sub xpathfeed {
+    my ($request) = @_;
+    my $xpf = XPathFeed->new_from_query($request);
+
+    if (exists $ENV{XPF_CACHE} && $ENV{XPF_CACHE} eq 'Cache::Redis') {
+        require Cache::Redis;
+
+        my $args = {
+            namespace => 'xpathfeed',
+        };
+
+        my $redis_url = $ENV{REDISCLOUD_URL} || $ENV{REDISTOGO_URL};
+        if ($redis_url) {
+            my $uri = URI->new($redis_url);
+            $uri->scheme('ftp'); # host_port と password を呼べるようにする
+            $args->{server}   = $uri->host_port;
+            $args->{password} = $uri->password if $uri->password;
+        }
+
+        $xpf->cache(Cache::Redis->new($args));
+    }
+
+    return $xpf;
+}
+
 get '/' => sub {
     my ($c) = @_;
-    my $xpf = XPathFeed->new_from_query($c->req);
+    my $xpf = xpathfeed($c->req);
     return $c->render(
         index => {
             xpf => $xpf,
@@ -26,7 +51,7 @@ get '/' => sub {
 
 get '/frame' => sub {
     my ($c) = @_;
-    my $xpf = XPathFeed->new_from_query($c->req);
+    my $xpf = xpathfeed($c->req);
     return $c->create_response(
         200,
         [
@@ -40,7 +65,7 @@ get '/frame' => sub {
 
 get '/feed' => sub {
     my ($c) = @_;
-    my $xpf = XPathFeed->new_from_query($c->req);
+    my $xpf = xpathfeed($c->req);
     return $c->create_response(
         200,
         [
