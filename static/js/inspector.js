@@ -51,7 +51,7 @@ function $X (exp, context, type /* want type */) {
 	var XPathGenerator = {
 		open : function () {
 			XPathGenerator._prev = [];
-			XPathGenerator._container = h("<textarea cols='40' rows='5'></textarea><br/>");
+			XPathGenerator._container = h("<textarea cols='40' rows='5' style='color:#000;background-color:#fff'></textarea><br/>");
 			XPathGenerator._inspect   = h("<button>Inspect</button>").firstChild;
 			XPathGenerator._timer = setInterval(XPathGenerator.change, 1000);
 			XPathGenerator._container.appendChild(XPathGenerator._inspect);
