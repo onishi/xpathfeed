@@ -142,9 +142,12 @@ sub _res2result {
 sub _resolve {
     my $self = shift;
     my $content = shift or return;
-    $content = Encode::encode('utf-8', $content) if Encode::is_utf8($content);
     $content = $self->resolver->resolve($content);
-    $content;
+    if (Encode::is_utf8($content)) {
+        Encode::encode('utf-8', $content);
+    } else {
+        $content;
+    }
 }
 
 sub _add_inspector {
