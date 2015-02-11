@@ -133,7 +133,7 @@ sub _res2result {
     my ($self, $res) = @_;
     return {
         content          => $res->content,
-        resolved_content => $self->_resolve($res->decoded_content),
+        resolved_content => $self->_resolve($res),
         decoded_content  => $res->decoded_content,
         cached           => time(),
     };
@@ -141,13 +141,9 @@ sub _res2result {
 
 sub _resolve {
     my $self = shift;
-    my $content = shift or return;
-    $content = $self->resolver->resolve($content);
-    if (Encode::is_utf8($content)) {
-        Encode::encode('utf-8', $content);
-    } else {
-        $content;
-    }
+    my $res = shift or return;
+    my $content = $self->resolver->resolve($res->decoded_content);
+    Encode::encode($res->content_charset, $content);
 }
 
 sub _add_inspector {
