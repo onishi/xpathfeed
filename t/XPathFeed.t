@@ -89,8 +89,6 @@ sub _http_result : Test(6) {
 
     is $result->{decoded_content}, decode_utf8('<html><body><a href="./hoge">ほげ</a></body></html>');
     is $xpf->decoded_content,      decode_utf8('<html><body><a href="./hoge">ほげ</a></body></html>');
-
-    $xpf->clean;
 }
 
 sub _tree : Tests { local $TODO = 'TODO' }
@@ -121,8 +119,6 @@ sub _list : Test(5) {
     is $list->[1]->{node}->as_XML_compact,
         decode_utf8('<li><a href="./fuga">ふが</a></li>');
     is $list->[1]->{link}, decode_utf8('http://hogehoge.com/fuga');
-
-    $xpf->clean;
 }
 
 sub _search : Test(3) {
@@ -173,8 +169,6 @@ sub _scheme : Test(5) {
     is $list->[1]->{node}->as_XML_compact,
         decode_utf8('<li><a href="./fuga">ふが</a></li>');
     is $list->[1]->{link}, decode_utf8('http://hogehoge.com/fuga');
-
-    $xpf->clean;
 }
 
 __PACKAGE__->runtests;
