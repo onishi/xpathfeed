@@ -12,19 +12,46 @@ use XPathFeed;
 
 use Amon2::Lite;
 
+sub xpathfeed {
+    my ($request) = @_;
+    my $xpf = XPathFeed->new_from_query($request);
+
+    if (exists $ENV{XPF_CACHE} && $ENV{XPF_CACHE} eq 'Cache::Redis') {
+        require Cache::Redis;
+
+        my $args = {
+            namespace => 'xpathfeed',
+        };
+
+        my $redis_url = $ENV{REDISCLOUD_URL} || $ENV{REDISTOGO_URL};
+        if ($redis_url) {
+            my $uri = URI->new($redis_url);
+            $uri->scheme('ftp'); # host_port と password を呼べるようにする
+            $args->{server}   = $uri->host_port;
+            $args->{password} = $uri->password if $uri->password;
+        }
+
+        $xpf->cache(Cache::Redis->new($args));
+    }
+
+    return $xpf;
+}
+
 get '/' => sub {
     my ($c) = @_;
-    my $xpf = XPathFeed->new_from_query($c->req);
+    my $xpf = xpathfeed($c->req);
     return $c->render(
         index => {
             xpf => $xpf,
+            GA_WEB_PROPERTY_ID => $ENV{GA_WEB_PROPERTY_ID},
+            GA_CONFIG => $ENV{GA_CONFIG},
         }
     );
 };
 
 get '/frame' => sub {
     my ($c) = @_;
-    my $xpf = XPathFeed->new_from_query($c->req);
+    my $xpf = xpathfeed($c->req);
     return $c->create_response(
         200,
         [
@@ -38,7 +65,7 @@ get '/frame' => sub {
 
 get '/feed' => sub {
     my ($c) = @_;
-    my $xpf = XPathFeed->new_from_query($c->req);
+    my $xpf = xpathfeed($c->req);
     return $c->create_response(
         200,
         [
@@ -56,10 +83,15 @@ builder {
 
     enable 'Plack::Middleware::ReverseProxy';
 
-    my $access_log = Path::Class::file($ENV{XPF_ACCESS_LOG} || '/var/log/app/access_log');
-    my $fh_access = $access_log->open('>>')
-        or die "Cannot open >> $access_log: $!";
-    $fh_access->autoflush(1);
+    my $fh_access;
+    if (exists $ENV{XPF_ACCESS_LOG} && $ENV{XPF_ACCESS_LOG} eq 'STDERR') {
+        $fh_access = *STDERR;
+    } else {
+        my $access_log = Path::Class::file($ENV{XPF_ACCESS_LOG} || '/var/log/app/access_log');
+        $fh_access = $access_log->open('>>')
+            or die "Cannot open >> $access_log: $!";
+        $fh_access->autoflush(1);
+    }
 
     enable 'Plack::Middleware::AccessLog::Timed',
         logger => sub {
@@ -104,16 +136,18 @@ __DATA__
 
   </head>
   <body>
+[% IF GA_WEB_PROPERTY_ID %]
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-50081271-1', 'xpathfeed.com');
+  ga('create', '[% GA_WEB_PROPERTY_ID %]', '[% GA_CONFIG || "auto" %]');
   ga('send', 'pageview');
 
 </script>
+[% END # IF GA_WEB_PROPERTY_ID %]
     <div class="container">
       <div class="headline">
         <h1 class="title-logo"><a href="/">XPathFeed</a></h1>

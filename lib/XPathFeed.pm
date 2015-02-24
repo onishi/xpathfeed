@@ -5,7 +5,6 @@ use base qw/Class::Accessor::Fast Class::Data::Inheritable/;
 
 use XPathFeed::UserAgent;
 
-use Cache::FileCache;
 use Encode qw(decode_utf8);
 use HTML::ResolveLink;
 use HTML::Selector::XPath;
@@ -70,12 +69,17 @@ sub ua {
 }
 
 sub cache {
-    $Cache ||= Cache::FileCache->new(
-        {
-            namespace  => 'xpathfeed',
-            cache_root => '/tmp/filecache',
-        }
-    );
+    my ($self, $new_value) = @_;
+    return $Cache = $new_value if $new_value;
+    $Cache ||= do {
+        require Cache::FileCache;
+        Cache::FileCache->new(
+            {
+                namespace  => 'xpathfeed',
+                cache_root => '/tmp/filecache',
+            }
+        );
+    };
 }
 
 sub resolver {
