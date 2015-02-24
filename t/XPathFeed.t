@@ -10,8 +10,8 @@ use XPathFeed;
 BEGIN {
     no strict 'refs';
     require Cache::FileCache;
-    local *Cache::FileCache::get = sub {};
-    local *Cache::FileCache::set = sub {};
+    *Cache::FileCache::get = sub {};
+    *Cache::FileCache::set = sub {};
 };
 
 sub _compile : Test(1) {
