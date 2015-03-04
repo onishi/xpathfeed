@@ -1590,6 +1590,23 @@ DISTRIBUTIONS
       Encode 2.10
       Exporter 5.57
       ExtUtils::MakeMaker 6.30
+  IO-Socket-SSL-2.012
+    pathname: S/SU/SULLR/IO-Socket-SSL-2.012.tar.gz
+    provides:
+      IO::Socket::SSL 2.012
+      IO::Socket::SSL::Intercept 1.93
+      IO::Socket::SSL::OCSP_Cache 2.012
+      IO::Socket::SSL::OCSP_Resolver 2.012
+      IO::Socket::SSL::PublicSuffix undef
+      IO::Socket::SSL::SSL_Context 2.012
+      IO::Socket::SSL::SSL_HANDLE 2.012
+      IO::Socket::SSL::Session_Cache 2.012
+      IO::Socket::SSL::Utils 0.031
+    requirements:
+      ExtUtils::MakeMaker 0
+      Mozilla::CA 0
+      Net::SSLeay 1.46
+      Scalar::Util 0
   IO-Socket-Timeout-0.27
     pathname: D/DA/DAMS/IO-Socket-Timeout-0.27.tar.gz
     provides:
@@ -1621,6 +1638,18 @@ DISTRIBUTIONS
     requirements:
       ExtUtils::MakeMaker 0
       perl 5.006002
+  LWP-Protocol-https-6.06
+    pathname: M/MS/MSCHILLI/LWP-Protocol-https-6.06.tar.gz
+    provides:
+      LWP::Protocol::https 6.06
+      LWP::Protocol::https::Socket 6.06
+    requirements:
+      ExtUtils::MakeMaker 0
+      IO::Socket::SSL 1.54
+      LWP::UserAgent 6.06
+      Mozilla::CA 20110101
+      Net::HTTPS 6
+      perl 5.008001
   List-AllUtils-0.09
     pathname: D/DR/DROLSKY/List-AllUtils-0.09.tar.gz
     provides:
@@ -1821,6 +1850,14 @@ DISTRIBUTIONS
       Scalar::Util 1.14
       XSLoader 0.02
       perl 5.008005
+  Mozilla-CA-20141217
+    pathname: A/AB/ABH/Mozilla-CA-20141217.tar.gz
+    provides:
+      Mozilla::CA 20141217
+    requirements:
+      ExtUtils::MakeMaker 0
+      Test 0
+      perl 5.006
   Net-HTTP-6.07
     pathname: M/MS/MSCHILLI/Net-HTTP-6.07.tar.gz
     provides:
@@ -1836,6 +1873,16 @@ DISTRIBUTIONS
       IO::Socket::INET 0
       URI 0
       perl 5.006002
+  Net-SSLeay-1.68
+    pathname: M/MI/MIKEM/Net-SSLeay-1.68.tar.gz
+    provides:
+      Net::SSLeay 1.68
+      Net::SSLeay::Handle 0.61
+    requirements:
+      ExtUtils::MakeMaker 6.36
+      MIME::Base64 0
+      Test::More 0.60_01
+      perl 5.005
   POSIX-strftime-Compiler-0.41
     pathname: K/KA/KAZEBURO/POSIX-strftime-Compiler-0.41.tar.gz
     provides:

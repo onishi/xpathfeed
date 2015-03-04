@@ -6,6 +6,7 @@ requires 'HTML::Selector::XPath';
 requires 'HTML::Tagset';
 requires 'HTML::TreeBuilder::XPath';
 requires 'HTTP::Request';
+requires 'LWP::Protocol::https';
 requires 'LWP::UserAgent';
 requires 'Scalar::Util';
 requires 'URI';
