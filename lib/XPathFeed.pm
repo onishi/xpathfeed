@@ -9,6 +9,7 @@ use Encode qw(decode_utf8);
 use HTML::ResolveLink;
 use HTML::Selector::XPath;
 use HTML::Tagset;
+use HTML::TreeBuilder 5 -weak;
 use HTML::TreeBuilder::XPath;
 use HTTP::Request;
 use Scalar::Util qw(blessed);
@@ -284,17 +285,6 @@ sub add_query_params {
         );
     }
     return $uri;
-}
-
-sub clean {
-    my $self = shift;
-    $self->tree or return;
-    $self->tree->delete;
-}
-
-sub DESTROY {
-    my $self = shift;
-    $self->clean;
 }
 
 # utility method
