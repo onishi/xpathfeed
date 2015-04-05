@@ -12,9 +12,11 @@ use HTML::Tagset;
 use HTML::TreeBuilder 5 -weak;
 use HTML::TreeBuilder::XPath;
 use HTTP::Request;
+use LWP::Protocol::https;
+use LWP::UserAgent 6;
 use Scalar::Util qw(blessed);
-use URI;
 use URI::Escape qw(uri_escape);
+use URI;
 use XML::RSS;
 
 our ($UserAgent, $Cache);
