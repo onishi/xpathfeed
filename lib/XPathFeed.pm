@@ -12,9 +12,11 @@ use HTML::Tagset;
 use HTML::TreeBuilder 5 -weak;
 use HTML::TreeBuilder::XPath;
 use HTTP::Request;
+use LWP::Protocol::https;
+use LWP::UserAgent 6;
 use Scalar::Util qw(blessed);
-use URI;
 use URI::Escape qw(uri_escape);
+use URI;
 use XML::RSS;
 
 our ($UserAgent, $Cache);
@@ -99,6 +101,7 @@ sub uri {
 
 sub http_result {
     my $self = shift;
+    $ENV{PERL_LWP_SSL_VERIFY_HOSTNAME} = 0;
     $self->{http_result} ||= do {
         my $url    = $self->uri;
         my $cache  = $self->cache;
