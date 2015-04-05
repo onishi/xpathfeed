@@ -99,6 +99,7 @@ sub uri {
 
 sub http_result {
     my $self = shift;
+    $ENV{PERL_LWP_SSL_VERIFY_HOSTNAME} = 0;
     $self->{http_result} ||= do {
         my $url    = $self->uri;
         my $cache  = $self->cache;
