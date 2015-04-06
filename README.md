@@ -5,6 +5,11 @@ XPathFeed is a Perl module and a web application to generate RSS Feed from XPath
 
 As a web application XPathFeed is hosted at [XpathFeed.com](http://xpathfeed.com/).
 
+As a Perl Module
+----------------
+
+For description of XPathFeed as a Perl module, see pod in [xpathfeed/XPathFeed.pm](https://github.com/onishi/xpathfeed/blob/master/lib/XPathFeed.pm).
+
 As a web app
 ------------
 
@@ -38,35 +43,6 @@ You can use `carton install` instead of `cpanm --installdeps .`. The version of 
 - Google Analytics
   - `GA_WEB_PROPERTY_ID` - Google Analytics web property ID (If empty, Google Analytics is disabled.)
   - `GA_CONFIG` - The last parameter for `ga('create')`
-
-As a Perl module
-----------------
-
-### SYNOPSIS
-
-```perl
-use XPathFeed;
-
-my $x = XPathFeed->new;
-$x->url($url);
-$x->xpath_list($xpath);
-print $x->feed;
-```
-
-### DESCRIPTION
-
-XPathFeed is a feed generator from xpath.
-
-```perl
-use XPathFeed;
-my $x = XPathFeed->new;
-$x->url($url);
-$x->xpath_list($xpath);
-print $x->feed;
-```
-or
-
-`plackup app.psgi`
 
 AUTHOR
 ------
