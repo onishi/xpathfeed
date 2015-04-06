@@ -1,19 +1,25 @@
 xpathfeed
 =========
 
-Generate RSS Feed from XPath
+XPathFeed is a Perl module and a web application to generate RSS Feed from XPath.
 
-Demo
-----
+As a web application XPathFeed is hosted at [XpathFeed.com](http://xpathfeed.com/).
+
+As a web app
+------------
+
+### Demo
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/onishi/xpathfeed/tree/master)
 
-### demo site
+#### demo site
 
 [XpathFeed.com](http://xpathfeed.com/)
 
-SYNOPSIS
---------
+As a Perl module
+----------------
+
+### SYNOPSIS
 
 ```perl
 use XPathFeed;
@@ -24,8 +30,7 @@ $x->xpath_list($xpath);
 print $x->feed;
 ```
 
-DESCRIPTION
------------
+### DESCRIPTION
 
 XPathFeed is a feed generator from xpath.
 
