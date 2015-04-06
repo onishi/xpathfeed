@@ -345,10 +345,6 @@ XPathFeed is a feed generator from xpath.
   $x->xpath_list($xpath);
   print $x->feed;
 
-  or
-
-  plackup app.psgi
-
 =over
 
 =item new
