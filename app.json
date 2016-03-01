@@ -1,7 +1,7 @@
 {
   "name": "XPathFeed",
   "description": "Generate RSS Feed from XPath",
-  "addons": ["rediscloud:25"],
+  "addons": ["rediscloud:30"],
   "success_url": "/",
   "env": {
     "BUILDPACK_URL": "https://github.com/pnu/heroku-buildpack-perl.git",
