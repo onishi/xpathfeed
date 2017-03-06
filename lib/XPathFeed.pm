@@ -12,6 +12,7 @@ use HTML::Tagset;
 use HTML::TreeBuilder 5 -weak;
 use HTML::TreeBuilder::XPath;
 use HTTP::Request;
+use Mozilla::CA;
 use Scalar::Util qw(blessed);
 use URI;
 use URI::Escape qw(uri_escape);
